@@ -15,6 +15,34 @@ export const debounce = function(fn, delay = 100) {
 }
 
 
+function debounce(fn, delay, immediate) {
+  var timer 
+  return function() {
+    var context = this 
+    var args = arguments
+
+    if (timer) clearTimeout(timer)
+    // clearTimeOut后timer是什么？
+    
+    if (immediate) {
+      var flag = !timer 
+      timer = setTimeout(function() {
+        timer = null
+      }, delay)
+
+      if (flag) fn.apply(context, args)
+      
+    } else {
+
+      timer = setTimeout(function() {
+        // fn()
+        fn.apply(context, args)
+      }, delay)
+    }
+  }
+}
+
+
 /**
  * @name 节流
  * @param {*} fn 
