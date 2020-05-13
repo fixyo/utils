@@ -8,10 +8,14 @@ class EPromise {
     // 失败的原因
     this.reason = undefined
 
+    this.fullFilledCbs = []
+    this.rejectedCbs = []
+
     const resolve = value => {
       if (this.state === 'pending') {
         this.state = 'fulfilled'
         this.value = value 
+        this.fullFilledCbs.forEach(cb => cb(this.value))
       }
     }
 
@@ -19,6 +23,7 @@ class EPromise {
       if (this.state === 'pending') {
         this.state = 'reject'
         this.reason = reason 
+        this.rejectedCbs.forEach(cb => cb(this.reason))
       }
     }
 
@@ -41,15 +46,32 @@ class EPromise {
         onRejected(this.reason)
       }, 0)
     }
+
+    if (this.state === 'pending') {
+      this.fullFilledCbs.push(value => {
+        setTimeout(() => {
+          onfulFilled(value)
+        }, 0)
+      })
+
+      this.rejectedCbs.push(reason => {
+        setTimeout(() => {
+          onRejected(reason)
+        }, 0)
+      })
+    }
   }
 
 }
 
 let p = new EPromise((resolve, reject) => {
-  resolve(1)
+  setTimeout(() => {
+
+    resolve(1)
+  }, 1000)
 })
 p.then(res => {
   console.log(res, 'res')
 })
-console.log('sss')
-// console.log(p)
+console.log('hahah')
+
