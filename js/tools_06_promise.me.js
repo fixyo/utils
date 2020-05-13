@@ -35,33 +35,61 @@ class EPromise {
   }
 
   then(onfulFilled, onRejected) {
-    if (this.state === 'fulfilled') {
-      setTimeout(() => {
-        onfulFilled(this.value)
-      }, 0)
-    }
+    onfulFilled = typeof onfulFilled === 'function' ? onfulFilled : value => value 
+    onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err }
 
-    if (this.reason === 'rejected') {
-      setTimeout(() => {
-        onRejected(this.reason)
-      }, 0)
-    }
+    let promise2 = new Promise((resolve, reject) => {
 
-    if (this.state === 'pending') {
-      this.fullFilledCbs.push(value => {
+      if (this.state === 'fulfilled') {
         setTimeout(() => {
-          onfulFilled(value)
+          let x = onfulFilled(this.value)
+          resolvePromise(promise2, x, resolve, reject)
+  
         }, 0)
-      })
-
-      this.rejectedCbs.push(reason => {
+      }
+  
+      if (this.reason === 'rejected') {
         setTimeout(() => {
-          onRejected(reason)
+          let x = onRejected(this.reason)
+          resolvePromise(promise2, x, resolve, reject)
         }, 0)
-      })
-    }
+      }
+  
+      if (this.state === 'pending') {
+        this.fullFilledCbs.push(value => {
+          setTimeout(() => {
+            let x = onfulFilled(value)
+            resolvePromise(promise2, x, resolve, reject)
+          }, 0)
+        })
+  
+        this.rejectedCbs.push(reason => {
+          setTimeout(() => {
+            let x = onRejected(reason)
+            resolvePromise(promise2, x, resolve, reject)
+          }, 0)
+        })
+      }
+    })
+
+    return promise2
   }
 
+}
+
+function resolvePromise(promise2, x, resolve, reject) {
+  if (x === promise2) {
+    return reject(new Error('xxx'))
+  }
+
+  let called 
+
+  if (x !== null && (typeof x === 'function' || typeof x === 'object')) {
+
+  } else {
+    // x为普通值
+    resolve(x)
+  }
 }
 
 let p = new EPromise((resolve, reject) => {
@@ -72,6 +100,9 @@ let p = new EPromise((resolve, reject) => {
 })
 p.then(res => {
   console.log(res, 'res')
+  return res
+}).then(res => {
+  console.log(res, 'res2')
 })
 console.log('hahah')
 
