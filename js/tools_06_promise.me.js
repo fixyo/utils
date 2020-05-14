@@ -42,31 +42,47 @@ class EPromise {
 
       if (this.state === 'fulfilled') {
         setTimeout(() => {
-          let x = onfulFilled(this.value)
-          resolvePromise(promise2, x, resolve, reject)
-  
+          try {
+            let x = onfulFilled(this.value)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch(e) {
+            reject(e)
+          }
         }, 0)
       }
   
       if (this.reason === 'rejected') {
         setTimeout(() => {
-          let x = onRejected(this.reason)
-          resolvePromise(promise2, x, resolve, reject)
+          try {
+            let x = onRejected(this.reason)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch(e) {
+            reject(e)
+          }
+          
         }, 0)
       }
   
       if (this.state === 'pending') {
         this.fullFilledCbs.push(value => {
           setTimeout(() => {
-            let x = onfulFilled(value)
-            resolvePromise(promise2, x, resolve, reject)
+            try {
+              let x = onfulFilled(value)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (e) {
+              reject(e)
+            }
           }, 0)
         })
   
         this.rejectedCbs.push(reason => {
           setTimeout(() => {
-            let x = onRejected(reason)
-            resolvePromise(promise2, x, resolve, reject)
+            try {
+              let x = onRejected(reason)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (e) {
+              reject(e)
+            }
           }, 0)
         })
       }
@@ -85,7 +101,31 @@ function resolvePromise(promise2, x, resolve, reject) {
   let called 
 
   if (x !== null && (typeof x === 'function' || typeof x === 'object')) {
+    try {
+      let then = x.then 
 
+      if (typeof then === 'function') {
+
+        then.call(x, y => {
+          if (called) return 
+          called = true 
+          resolvePromise(promise2, y, resolve, reject)
+        },
+          err => {
+            if (called) return 
+            called = true 
+            reject(err)
+          }
+        )
+
+      } else {
+        resolve(x)
+      }
+    } catch(e) {
+      if (callled) return 
+      called = true
+      reject(e)
+    }
   } else {
     // x为普通值
     resolve(x)
