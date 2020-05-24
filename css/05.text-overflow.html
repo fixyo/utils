@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .single-line {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 150px;
+
+    }
+    .multi-line {
+      width: 200px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="single-line">
+    我是单行文字我是单行文字我是单行文字我是单行文字我是单行文字啊啊啊
+  </div>
+  <hr>
+  <div class="multi-line">
+    
+      我是多行文字我是多行文字我是多行文字我是多行文字我是多行文字啊啊啊啊啊啊
+    
+  
+      我是多行文字我是多行文字我是多行文字我是多行文字我是多行文字啊啊啊啊啊啊
+    
+  
+      我是多行文字我是多行文字我是多行文字我是多行文字我是多行文字啊啊啊啊啊啊
+  
+  
+      我是多行文字我是多行文字我是多行文字我是多行文字我是多行文字啊啊啊啊啊啊
+    
+
+  </div>
+</body>
+</html>

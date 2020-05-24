@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .parent {
+      height: 100px;
+      width: 100px;
+      border: 1px solid green;
+    }
+    .child {
+      width: 50px;
+      height: 50px;
+      border: 1px solid hotpink;
+    }
+
+    .parent0 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .parent1 {
+      position: relative;
+
+    }
+    .child1 {
+      position: absolute;
+      top:50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    parent2 {
+      display: grid;
+    }
+    child2 {
+      justify-self: center;
+      align-self: center;
+    }
+
+    .parent3 {
+      text-align: center;
+      font-size: 0;
+      
+    }
+    .parent3::before {
+      content: '';
+      display: inline-block; 
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+    }
+    .child3 {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="parent parent0">
+    <div class="child"></div>
+  </div>
+
+  <hr>
+  <div class="parent parent1">
+    <div class="child child1"></div>
+  </div>
+
+  <hr>
+  <div class="parent parent2">
+    <div class="child child2"></div>
+  </div>
+
+  <hr>
+  <div class="parent parent3">
+    <div class="child child3"></div>
+  </div>
+
+</body>
+</html>

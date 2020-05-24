@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      border: 1px solid green;
+      /* overflow: hidden; */
+      /* float: left; */
+      /* display: flex; */
+      /* display: table; */
+      /* position: absolute; */
+    }
+    .content {
+      float: left; 
+    }
+    .clearfix::after {
+      display: block;
+      content: '.';
+      height: 0;
+      visibility: hidden;
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+  <div class="container clearfix">
+    <!-- 子元素float会导致父级高度塌陷 -->
+    <!-- 父元素overflow: hidden触发bfc -->
+    <!-- 父元素同样float也会触发bfc，但是父级元素的display会变成display：inline-block -->
+    <!-- 父元素display为flex会触发bfc -->
+    <div class="content">
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+    </div>
+  </div>
+  <div>hahah</div>
+
+  <hr>
+
+  
+  <div>
+    <p style="margin: 15px;">content1</p>
+    <p style="margin: 30px;">content2</p>
+  </div>
+
+  <hr>
+  
+  <!-- 第二个元素有部分被第一个元素覆盖，但是文字不会覆盖 -->
+  <!-- 想要第二个元素完全不被覆盖，就要触发第二个元素的bfc，例如增加overflow:hidden; 或者float: left-->
+  <div style="height: 100px;width: 100px;float: left;background: lightblue">我是一个左浮动的元素</div>
+  <div style="width: 200px; height: 200px;background: #eee; overflow:hidden;">我是一个没有设置浮动, 
+    也没有触发 BFC 元素, width: 200px; height:200px; background: #eee;
+  </div>
+</body>
+</html>
+
+<!-- BFC(block formating context) -->
+<!-- 是页面盒模型布局中的一种css渲染模式 -->
+<!-- 相当于一个独立的容器，里面的元素和外部元素互不影响 -->
+
+<!-- 创建bfc的方式 -->
+<!-- 1.html根元素 -->
+<!-- 2.float -->
+<!-- 3.绝对定位 -->
+<!-- 4.overflow不为visiable -->
+<!-- 5.dispaly为table或则flex -->
+
+<!-- bfc的作用 -->
+<!-- 1.清除浮动 -->
+<!-- 2.同一bfc中块级元素间外边距重叠的问题 放在不同的BFC中可解决-->
+
+<!-- 参考链接： -->
+<!-- https://zhuanlan.zhihu.com/p/2532164 -->
